@@ -27,9 +27,12 @@ pacman_eos = "/usr/share/snigdhaos-downloader/snigdhaos/eos/pacman/pacman.conf"
 pacman_garuda = "/usr/share/snigdhaos-downloader/snigdhaos/garuda/pacman/pacman.conf"
 blank_pacman_arch = "/usr/share/snigdhaos-downloader/snigdhaos/arch/pacman/blank/pacman.conf"
 blank_pacman_eos = "/usr/share/snigdhaos-downloader/snigdhaos/eos/pacman/blank/pacman.conf"
-blank_pacman_garuda = (
-    "/usr/share/snigdhaos-downloader/snigdhaos/garuda/pacman/blank/pacman.conf"
-)
+blank_pacman_garuda = "/usr/share/snigdhaos-downloader/snigdhaos/garuda/pacman/blank/pacman.conf"
+
+## Pacman File Configurations
+pacman_logfile = "/var/log/pacman.log"
+pacman_cache_dir = "/var/cache/pacman/pkg/"
+pacman_lockfile = "/var/lib/pacman/db.lck"
 
 
 def get_lines(files):
