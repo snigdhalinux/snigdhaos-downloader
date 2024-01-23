@@ -6,8 +6,9 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
+from os import path, getlogin
 # from gi.repository import
 
 get_distro = id()
-superuser = getLogin()
-home =
+superuser = getlogin()
+home = "/home/" + str(superuser)
