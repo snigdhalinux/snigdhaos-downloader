@@ -12,11 +12,25 @@ from os import path, getlogin
 get_distro = id()
 superuser = getlogin()
 home = "/home/" + str(superuser)
+
+# GPG Configurations
 gpg_config = "/etc/pacman.d/gnupg/gpg.conf"
 gpg_config_local = home + "/.gnupg/gpg.conf"
+gpg_config_original = "/usr/share/snigdhaos-downloader/snigdhaos/any/gpg.conf"
+gpg_config_local_original = "/usr/share/snigdhaos-downloader/snigdhaos/any/gpg.conf"
 
-gpg_config_original = "/usr/share/snigdhaos-downloader/data/any/gpg.conf"
-gpg_config_local_original = "/usr/share/snigdhaos-downloader/data/any/gpg.conf"
+## Pacman Configurations
+mirrorlist = "/etc/pacman.d/mirrorlist"
+pacman = "/etc/pacman.conf"
+pacman_archlinux = "/usr/share/snigdhaos-downloader/snigdhaos/arch/pacman/pacman.conf"
+pacman_eos = "/usr/share/snigdhaos-downloader/snigdhaos/eos/pacman/pacman.conf"
+pacman_garuda = "/usr/share/snigdhaos-downloader/snigdhaos/garuda/pacman/pacman.conf"
+blank_pacman_arch = "/usr/share/snigdhaos-downloader/snigdhaos/arch/pacman/blank/pacman.conf"
+blank_pacman_eos = "/usr/share/snigdhaos-downloader/snigdhaos/eos/pacman/blank/pacman.conf"
+blank_pacman_garuda = (
+    "/usr/share/snigdhaos-downloader/snigdhaos/garuda/pacman/blank/pacman.conf"
+)
+
 
 def get_lines(files):
     try:
