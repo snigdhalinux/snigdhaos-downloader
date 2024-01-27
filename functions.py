@@ -259,5 +259,135 @@ def check_snigdhaos_mirror_active():
         lines = f.readlines()
         f.close()
         snigdhaos_base = "[snigdhaos-core]"
-        ntrozen_mirror = "[nitrozen]"
-    
+        nitrozen_mirror = "[nitrozen]"
+    for line in lines:
+        if nitrozen_mirror in line:
+            if "#" + nitrozen_mirror in line:
+                return False
+            else:
+                return True
+    for line in lines:
+        if snigdhaos_base in line:
+            if "#" + snigdhaos_base in line:
+                return False
+            else:
+                return True
+
+def install_package(self, package):
+    command = "pacman -S " + package + " --noconfirm --needed"
+    if check_package_installed(package):
+        print(package + " already installed!")
+        GLib.idle_add(show_in_app_notfication, self, package + " already installed!",) #needed
+    else:
+        try:
+            print(command)
+            subprocess.call(command.split(" "), shell=False,stdout=subprocess.PIPE, stderr=subprocess.STDOUT,)
+            print(package + " installed successfully :)")
+            GLib.idle_add(show_in_app_notfication,self,package + " installed successfully :)")
+        except Exception as e:
+            print(e)
+
+def install_local_package(self, package):
+    command = "pacman -U " + package + " --noconfirm"
+    try:
+        print(command)
+        subprocess.call(command.split(" "), shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,)
+        print(package + "installed successfully :)")
+        GLib.idle_add(show_in_app_notfication,self, package + " installed successfully :)")
+    except Exception as e:
+        print(e)
+
+def install_snigdhaos_package(self, package):
+    if check_snigdhaos_mirror_active():
+        command = "pacman -S " + package + " --noconfirm --needed"
+        if check_package_installed(package):
+            print(package + " already installed!")
+            GLib.idle_add(show_in_app_notfication, self, package + " already installed!",)
+        else:
+            try:
+                print(command)
+                subprocess.call(command.split(" "),shell=False,stdout=subprocess.PIPE, stderr=subprocess.STDOUT,)
+                print(package + " installed sucessfully :)")
+                GLib.idle_add(show_in_app_notfication,self, package + " installed successfully :)")
+            except Exception as e:
+                print(e)
+    else:
+        print("Snigdha OS Mirror is not active!")
+        print("Activate Snigdha OS Mirror First!")
+        GLib.idle_add(show_in_app_notfication, self, "Snigdha OS Mirror is not active!")
+
+#remove package without dependencies
+def remove_package(self, package):
+    command = "pacman -R " + package + " --noconfirm"
+    if check_package_installed(package):
+        print(command)
+        try:
+            subprocess.call(command.split(" "),shell=False,stdout=subprocess.PIPE, stderr=subprocess.STDOUT,)
+            print(package + " removed successfully ;)")
+            GLib.idle_add(show_in_app_notfication, self, " removed successfully ;)")
+        except Exception as e:
+            print(e)
+    else:
+        print(package + " already removed!")
+        GLib.idle_add(show_in_app_notfication, self, " already removed!")
+
+#let's remove package with dependencies
+def remove_package_s(self, package):
+    command = "pacman -Rs " + package + " --noconfirm"
+    if check_package_installed(package):
+        print(command)
+        try:
+            subprocess.call(command.split(" "),shell=False,stdout=subprocess.PIPE, stderr=subprocess.STDOUT,)
+            print(package + " removed successfully ;)")
+            GLib.idle_add(show_in_app_notfication, self, " removed successfully ;)")
+        except Exception as e:
+            print(e)
+    else:
+        print(package + " already removed!")
+        GLib.idle_add(show_in_app_notfication, self, " already removed!")
+
+def remove_package_ss(self, package):
+    command = "pacman -Rss " + package + " --noconfirm"
+    if check_package_installed(package):
+        print(command)
+        try:
+            subprocess.call(command.split(" "),shell=False,stdout=subprocess.PIPE, stderr=subprocess.STDOUT,)
+            print(package + " removed successfully ;)")
+            GLib.idle_add(show_in_app_notfication, self, " removed successfully ;)")
+        except Exception as e:
+            print(e)
+    else:
+        print(package + " already removed!")
+        GLib.idle_add(show_in_app_notfication, self, " already removed!")
+
+def remove_package_dd(self, package):
+    command = "pacman -Rdd " + package + " --noconfirm"
+    if check_package_installed(package):
+        print(command)
+        try:
+            subprocess.call(command.split(" "),shell=False,stdout=subprocess.PIPE, stderr=subprocess.STDOUT,)
+            print(package + " removed successfully ;)")
+            GLib.idle_add(show_in_app_notfication, self, " removed successfully ;)")
+        except Exception as e:
+            print(e)
+    else:
+        print(package + " already removed!")
+        GLib.idle_add(show_in_app_notfication, self, " already removed!")
+
+
+
+##########################################################################
+def show_in_app_notfication(self, message):
+    if self.timeout_id is not None:
+        GLib.source_remove(self.timeout_id)
+        self.timeout_id = None
+    self.notfication_label.set_markup('<span foreground="white"' + message +'</span>')
+    self.notfication_revealer.set_reveal_child(True)
+    self.timeout_id = GLib.timeout_add(3000, timeOut, self)
+def timeOut(self):
+    close_in_app_notification(self)
+def close_in_app_notification(self):
+    self.notfication_revealer.set_reveal_child(False)
+    GLib.source_remove(self.timeout_id)
+    self.timeout_id = None
+##########################################################################
