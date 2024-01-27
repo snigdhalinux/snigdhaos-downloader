@@ -128,5 +128,136 @@ def check_fi_process_is_running(processName):
             pass
     return False
 
+def copytree(self, src, dst, symlinks=False, ignore=None):
+    if not path.exists(dst):
+        makedirs(dst)
+    for item in listdir(src):
+        s = path.join(src, item)
+        d = path.join(dst, item)
+        if path.exists(d):
+            # try catch block will work I think if not <--
+            try:
+                shutil.rmtree(d)
+            except Exception as e:
+                print(e)
+                unlink(d)
+        if path.isdir(s):
+            try:
+                shutil.copytree(s, d, symlinks, ignore)
+            except Exception as e:
+                print(e)
+                print("ERROR#2!") # debugging purpose ig get errors
+                self.ecode = 1
+        else:
+            try:
+                shutil.copy2(s, d)
+            except:
+                print("ERROR#3")
+                self.ecode = 1
 
+def file_check(path):
+    if os.path.isdir(path):
+        return True
+    return False
 
+def path_check(path):
+    if os.path.isdir(path):
+        return True
+    return False
+
+def is_empty_directory(path):
+    if os.path.exists(path) and not os.path.isfile(path):
+        if not os.listdir(path):
+            return True
+        else:
+            return False
+
+def check_content(value, file):
+    try:
+        with open(file, "r", encoding="utf-8") as myfile:
+            lines = myfile.readlines()
+            myfile.close()
+        for line in lines:
+            if value in line:
+                if value in line:
+                    return True
+                else:
+                    return False
+        return False
+    except:
+        return False
+
+def check_package_installed(package):
+    try:
+        subprocess.check_output("pacman -Qi " + package, shell=True, stderr=subprocess.STDOUT)
+        return True
+    except subprocess.CalledProcessError:
+        return False
+
+def check_service(service):
+    try:
+        command = "systemctl is-active " + service + ".service"
+        output = subprocess.run(command.split(" "), check=True, shell=False,stdout=subprocess.PIPE, stderr=subprocess.STDOUT,)
+        status = output.stdout.decode().strip()
+        if status == "active":
+            return True
+        else:
+            return False
+    except Exception:
+        return False #nothing to print here 
+
+def check_socket(socket):
+    try:
+        command = "systemctl is-active " + socket + ".socket"
+        output = subprocess.run(command.split(" "), check=True,shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,)
+        status = output.stdout.decode().strip()
+        if status == "active":
+            return True
+        else:
+            return False
+    except Exception:
+        return False
+
+def list_users(filename):
+    try:
+        data = []
+        with open(filename, "r", encoding="utf-8") as f:
+            for line in f.readlines():
+                if "1001" in line.split(":")[2]:
+                    data.append(line.split(":")[0])
+                if "1002" in line.split(":")[2]:
+                    data.append(line.split(":")[0])
+                if "1003" in line.split(":")[2]:
+                    data.append(line.split(":")[0])
+                if "1004" in line.split(":")[2]:
+                    data.append(line.split(":")[0])
+                if "1005" in line.split(":")[2]:
+                    data.append(line.split(":")[0])
+            data.sort()
+            return data
+    except Exception as e:
+        print(e)
+
+def check_group(group):
+    try:
+        groups = subprocess.run(["sh", "-c", "id " + sudo_username], shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,)
+        for i in groups.stdout.decode().split(" "):
+            if group in i:
+                return True
+            else:
+                return False
+    except Exception as e:
+        print(e)
+def check_systemd_boot():
+    if (path_check("/boot/loader") is True and file_check("/boot/loader/loader.conf") is True):
+        return True
+    else:
+        return False
+    
+def check_snigdhaos_mirror_active():
+    with open(pacman, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+        f.close()
+        snigdhaos_base = "[snigdhaos-core]"
+        ntrozen_mirror = "[nitrozen]"
+    
