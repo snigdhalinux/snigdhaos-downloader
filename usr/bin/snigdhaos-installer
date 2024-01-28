@@ -1,0 +1,39 @@
+#!/usr/bin/env sh
+# set -e
+### Do not run as root!
+
+echo "*********************************************************************"
+echo "[INFO] Checking Session"
+test $(whoami) == "root" && echo "[ERROR] Do not run as sudo!" && exit 1
+test -z $DISPLAY && echo "[ERROR] DISPLAY Var is not set!" && exit 1
+
+# X11 | Wayland | TTY
+session = $(loginctl show-session $(loginctl|grep $(whoami) | awk '{print $1}') -p Type | awk -F= '{print $2}' | grep "x11\|waland\|tty")
+test -z "$session" && echo "[ERROR] Failed to Verify Your Session" && exit 1
+xauth_file = $(xauth info | awk -F"Auth File: " '{print $2}' | tr -d ' ')
+tset -s "$xauth_file" || touch "$xauth_file"
+
+case "$session" in 
+    "wayland")
+    xauth gen $DISPLAY &> /dev/null
+    echo "[INFO] Display = $DISPLAY"
+    echo "[INFO] Session = $session"
+    test -z "$(xauth list)" || echo "[INFO] Xauth Session = OK"
+    ;;
+    "x11")
+    echo "[INFO] Display = $DISPLAY"
+    echo "[INFO] Session = $session"
+    test -z "$(xauth list)" || echo "[INFO] Xauth Session = OK"
+    ;;
+    "tty")
+    echo "[INFO] Display = $DISPLAY"
+    echo "[INFO] Session = $session"
+    test -z "$(xauth list)" || echo "[INFO] Xauth Session = OK";;
+    *)
+    echo "[WARN] Cannot Verify!"
+    ;;
+esac
+echo "*********************************************************************"
+
+echo "[INFO] Initiating Snigdha OS Installer!"
+pkexec '/usr/share/snidhaos-installer/snigdhaos-installer.py'
