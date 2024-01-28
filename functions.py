@@ -374,7 +374,36 @@ def remove_package_dd(self, package):
         print(package + " already removed!")
         GLib.idle_add(show_in_app_notfication, self, " already removed!")
 
+def enable_login_manager(self, loginmanager):
+    if check_package_installed(loginmanager):
+        try:
+            command = "systemctl enable " + loginmanager + " .service -f"
+            print(command)
+            subprocess.call(command.split(" "),shell=False,stdout=subprocess.PIPE, stderr=subprocess.STDOUT,)
+            print(loginmanager + " enabled :) - Reboot!")
+            GLib.idle_add(show_in_app_notfication, self, loginmanager + " enabled :) - Reboot!")
+        except Exception as e:
+            print(e)
+    else:
+        print(loginmanager + " not installed :(")
+        GLib.idle_add(show_in_app_notfication, self, loginmanager + " not installed :(")
 
+def add_autologin_group(self):
+    command = subprocess.run(["sh","-c", "su - " + sudo_username + " -c groups"], check=True,shell=False,stdout=subprocess.PIPE)
+    groups = command.stdout.decode().strip().split(" ")
+    if "autologin" not in groups:
+        command2 = "groupadd autologin"
+        try:
+            subprocess.call(command2.split(" "),shell=False,stdout=subprocess.PIPE, stderr=subprocess.STDOUT,)
+        except Exception as e:
+            print(e)
+        # need another block
+        try:
+            subprocess.run(["gpasswd", "-a", sudo_username, "autlogin"], check=True, shell=False)
+        except Exception as e:
+            print(e)
+
+# If we need more, we will add later on! :)
 
 ##########################################################################
 def show_in_app_notfication(self, message):
