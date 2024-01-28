@@ -27,9 +27,7 @@ def gui(self, Gtk, vboxstack19, fn, fixes):
     btn_install_arch_keyring = Gtk.Button(label="Install keyring (local)")
     btn_install_arch_keyring.connect("clicked", self.on_click_install_arch_keyring)
     btn_install_arch_keyring_online = Gtk.Button(label="Install keyring (online)")
-    btn_install_arch_keyring_online.connect(
-        "clicked", self.on_click_install_arch_keyring_online
-    )
+    btn_install_arch_keyring_online.connect("clicked", self.on_click_install_arch_keyring_online)
     hbox5.pack_start(hbox5_label, False, False, 10)
     hbox5.pack_end(btn_install_arch_keyring_online, False, False, 10)
     hbox5.pack_end(btn_install_arch_keyring, False, False, 10)
@@ -102,9 +100,7 @@ def gui(self, Gtk, vboxstack19, fn, fixes):
     hbox8_label = Gtk.Label(xalign=0)
     hbox8_label.set_text("Get the best keyservers for ~/.gnupg/gpg.conf")
     btn_apply_pacman_gpg_conf_local = Gtk.Button(label="Backup and reset gpg.conf")
-    btn_apply_pacman_gpg_conf_local.connect(
-        "clicked", self.on_click_fix_pacman_gpg_conf_local
-    )
+    btn_apply_pacman_gpg_conf_local.connect("clicked", self.on_click_fix_pacman_gpg_conf_local)
     hbox8.pack_start(hbox8_label, False, False, 10)
     hbox8.pack_end(btn_apply_pacman_gpg_conf_local, False, False, 10)
 
@@ -136,9 +132,7 @@ def gui(self, Gtk, vboxstack19, fn, fixes):
     ]
 
     btn_apply_parallel_downloads = Gtk.Button(label="Apply")
-    btn_apply_parallel_downloads.connect(
-        "clicked", self.on_click_apply_parallel_downloads
-    )
+    btn_apply_parallel_downloads.connect("clicked", self.on_click_apply_parallel_downloads)
 
     if fn.check_content("ParallelDownloads", fn.pacman):
         for number in numbers:
@@ -166,9 +160,7 @@ def gui(self, Gtk, vboxstack19, fn, fixes):
 
     hbox9 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox9_label = Gtk.Label(xalign=0)
-    hbox9_label.set_markup(
-        "<b>Distro specific:  </b>" + fn.change_distro_label(fn.distr)
-    )
+    hbox9_label.set_markup("<b>Distro specific:  </b>" + fn.change_distro_label(fn.distr))
     hbox9.pack_start(hbox9_label, False, False, 10)
 
     hbox10 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
