@@ -4,6 +4,7 @@
 # Co Maintainer @ Snigdha OS
 ##################################################################################
 
+### Snigdha OS Installer [short: SINsin]
 
 def gui(self, Gtk, vboxstack22, sddm, lightdm, lxdm, fn, login):
     """create a gui"""
@@ -35,12 +36,8 @@ def gui(self, Gtk, vboxstack22, sddm, lightdm, lxdm, fn, login):
     stack_switcher.set_stack(stack)
     stack_switcher.set_homogeneous(True)
 
+    # sddm 
     if fn.check_package_installed("sddm"):
-
-        # ==================================================================
-        #                       SDDM
-        # ==================================================================
-
         hbox4 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         hbox4_lbl = Gtk.Label(xalign=0)
         hbox4_lbl.set_text("Sddm (inactive)")
