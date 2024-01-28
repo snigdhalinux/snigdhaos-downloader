@@ -118,9 +118,9 @@ backup your files"
         hbox9.pack_end(self.theme_sddm, False, False, 10)
 
         hbox11 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-        install_sddm_themes = Gtk.Button(label="Install missing ArcoLinux Sddm Themes")
+        install_sddm_themes = Gtk.Button(label="Install missing Snigdha OS Sddm Themes")
         install_sddm_themes.connect("clicked", self.on_click_install_sddm_themes)
-        remove_sddm_themes = Gtk.Button(label="Remove the ArcoLinux Sddm Themes")
+        remove_sddm_themes = Gtk.Button(label="Remove the Snigdha OS Sddm Themes")
         remove_sddm_themes.connect("clicked", self.on_click_remove_sddm_themes)
         hbox11.pack_start(install_sddm_themes, False, False, 10)
         hbox11.pack_end(remove_sddm_themes, False, False, 10)
@@ -143,7 +143,7 @@ backup your files"
 
         hbox12 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         hbox12_lbl = Gtk.Label(xalign=0)
-        hbox12_lbl.set_text("Keep the default ArcoLinux theme")
+        hbox12_lbl.set_text("Keep the default Snigdha OS theme")
         self.keep_default_theme = Gtk.Switch()
         hbox12.pack_end(self.keep_default_theme, False, False, 10)
         hbox12.pack_end(hbox12_lbl, False, False, 10)
@@ -253,20 +253,20 @@ backup your files"
         hbox140 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         label_lightdm_config = Gtk.Label(xalign=0)
         label_lightdm_config.set_text(
-            "We recommend to use the default ATT lightdm and lightdm-greeter configuration setup"
+            "We recommend to use the default Snigdha OS lightdm and lightdm-greeter configuration setup"
         )
         hbox140.pack_start(label_lightdm_config, False, False, 10)
 
         hbox130 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         reset_lightdm_original_si = Gtk.Button(
-            label="Apply the Lightdm configuration from ATT - auto reboot"
+            label="Apply the Lightdm configuration from Snigdha OS - auto reboot"
         )
         reset_lightdm_original_si.set_size_request(100, 30)
         reset_lightdm_original_si.connect(
             "clicked", self.on_click_lightdm_reset_original_si
         )
         reset_lightdm_original = Gtk.Button(
-            label="Apply your original Lightdm configuration - auto reboot"
+            label="Apply your original Snigdha OS configuration - auto reboot"
         )
         reset_lightdm_original.set_size_request(100, 30)
         reset_lightdm_original.connect(
@@ -297,9 +297,9 @@ backup your files"
         hbox23 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         hbox23_lbl = Gtk.Label(xalign=0)
         hbox23_lbl.set_text("Use the ATT lightdm-gtk-greeter configuration")
-        btn_install_arco_lightdm_greeter = Gtk.Button(label="Set ATT config")
-        btn_install_arco_lightdm_greeter.connect(
-            "clicked", self.on_click_install_arco_lightdmgreeter
+        btn_install_snigdhaos_lightdm_greeter = Gtk.Button(label="Set Snigdha OS Installer config")
+        btn_install_snigdhaos_lightdm_greeter.connect(
+            "clicked", self.on_click_install_snigdhaos_lightdmgreeter
         )
         btn_reset_lightdm_greeter = Gtk.Button(label="Reset back to original config")
         btn_reset_lightdm_greeter.connect(
@@ -307,7 +307,7 @@ backup your files"
         )
         hbox23.pack_start(hbox23_lbl, False, False, 10)
         hbox23.pack_end(btn_reset_lightdm_greeter, False, False, 10)
-        hbox23.pack_end(btn_install_arco_lightdm_greeter, False, False, 10)
+        hbox23.pack_end(btn_install_snigdhaos_lightdm_greeter, False, False, 10)
 
         hbox29 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         self.lbl_slickgreeter = Gtk.Label(xalign=0)
@@ -487,17 +487,17 @@ backup your files"
         hbox54 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         hbox54_lbl = Gtk.Label(xalign=0)
         hbox54_lbl.set_text("Install more Lxdm ATT themes")
-        btn_install_arco_lxdm_theme_minimalo = Gtk.Button(label="Install ATT minimalo")
-        btn_install_arco_lxdm_theme_minimalo.connect(
+        btn_install_snigdhaos_lxdm_theme_minimalo = Gtk.Button(label="Install ATT minimalo")
+        btn_install_snigdhaos_lxdm_theme_minimalo.connect(
             "clicked", self.on_click_install_si_lxdm_minimalo
         )
-        btn_remove_arco_lxdm_theme_minimalo = Gtk.Button(label="Remove ATT minimalo")
-        btn_remove_arco_lxdm_theme_minimalo.connect(
+        btn_remove_snigdhaos_lxdm_theme_minimalo = Gtk.Button(label="Remove ATT minimalo")
+        btn_remove_snigdhaos_lxdm_theme_minimalo.connect(
             "clicked", self.on_click_remove_si_lxdm_minimalo
         )
         hbox54.pack_start(hbox54_lbl, False, False, 10)
-        hbox54.pack_end(btn_remove_arco_lxdm_theme_minimalo, False, False, 10)
-        hbox54.pack_end(btn_install_arco_lxdm_theme_minimalo, False, False, 10)
+        hbox54.pack_end(btn_remove_snigdhaos_lxdm_theme_minimalo, False, False, 10)
+        hbox54.pack_end(btn_install_snigdhaos_lxdm_theme_minimalo, False, False, 10)
 
         hbox55 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         hbox55_lbl = Gtk.Label(xalign=0)
