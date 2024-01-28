@@ -420,3 +420,4 @@ def close_in_app_notification(self):
     GLib.source_remove(self.timeout_id)
     self.timeout_id = None
 ##########################################################################
+    

@@ -34,4 +34,9 @@ def create_user(self):
                     fn.system(user_password + " | " + "chpasswd -c SHA512")
                 print("User Created Successfully :)")
                 GLib.idle_add(fn.show_in_app_notfication, self, "User Created Successfully :)")
-                
+            else:
+                GLib.idle_add(fn.show_in_app_notfication, self, "Password Didn't match :(")
+                GLib.messagebox(fn.show_in_app_notfication, self, "Password Didn't match :(")
+    else:
+        GLib.idle_add(fn.show_in_app_notfication, self, "Empty Fields :(")
+        GLib.messagebox(fn.show_in_app_notfication, self, "Empty Fields :(")
