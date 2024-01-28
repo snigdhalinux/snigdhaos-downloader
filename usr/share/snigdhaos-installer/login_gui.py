@@ -65,16 +65,10 @@ backup your files"
         hbox14.pack_start(label_sddm_config, False, False, 10)
 
         hbox13 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-        reset_sddm_original_si = Gtk.Button(
-            label="Apply the Sddm configuration from Snigdha OS Installer - auto reboot"
-        )
+        reset_sddm_original_si = Gtk.Button(label="Apply the Sddm configuration from SIN - auto reboot")
         reset_sddm_original_si.set_size_request(100, 30)
-        reset_sddm_original_si.connect(
-            "clicked", self.on_click_sddm_reset_original_si
-        )
-        reset_sddm_original = Gtk.Button(
-            label="Apply your original Sddm configuration - auto reboot"
-        )
+        reset_sddm_original_si.connect("clicked", self.on_click_sddm_reset_original_si)
+        reset_sddm_original = Gtk.Button(label="Apply your original Sddm configuration - auto reboot")
         reset_sddm_original.set_size_request(100, 30)
         reset_sddm_original.connect("clicked", self.on_click_sddm_reset_original)
         hbox13.pack_start(reset_sddm_original_si, False, False, 10)
@@ -147,9 +141,7 @@ backup your files"
 
         hbox17 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         hbox17_lbl = Gtk.Label(xalign=0)
-        hbox17_lbl.set_text(
-            "Select your cursor theme for the login screen e.g. Bibata-Modern-Ice"
-        )
+        hbox17_lbl.set_text("Select your cursor theme for the login screen e.g. Bibata-Modern-Ice")
         hbox17.pack_start(hbox17_lbl, False, False, 10)
 
         hbox15 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
@@ -215,9 +207,7 @@ backup your files"
 
         message = Gtk.Label()
         message.set_markup("<b>Sddm does not seem to be installed</b>")
-        install_sddm = Gtk.Button(
-            label="Install Sddm - auto reboot - do not forget to enable it"
-        )
+        install_sddm = Gtk.Button(label="Install Sddm - auto reboot - do not forget to enable it")
         install_sddm.connect("clicked", self.on_click_si_sddm_clicked)
 
         vboxstack1.pack_start(hbox31, False, False, 0)
@@ -236,9 +226,7 @@ backup your files"
         hbox19_lbl.set_text("Lightdm (inactive)")
         if fn.check_content("lightdm", "/etc/systemd/system/display-manager.service"):
             hbox19_lbl.set_text("Lightdm (active)")
-        if fn.check_content(
-            "lightdm", "/etc/systemd/system/display-manager.service"
-        ) and fn.check_content("slick-greeter", "/etc/lightdm/lightdm.conf"):
+        if fn.check_content("lightdm", "/etc/systemd/system/display-manager.service") and fn.check_content("slick-greeter", "/etc/lightdm/lightdm.conf"):
             hbox19_lbl.set_text("Lightdm + slick-greeter (active)")
         hbox19_lbl.set_name("title")
         hbox19.pack_start(hbox19_lbl, False, False, 0)
@@ -249,26 +237,16 @@ backup your files"
 
         hbox140 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         label_lightdm_config = Gtk.Label(xalign=0)
-        label_lightdm_config.set_text(
-            "We recommend to use the default Snigdha OS lightdm and lightdm-greeter configuration setup"
-        )
+        label_lightdm_config.set_text("We recommend to use the default Snigdha OS lightdm and lightdm-greeter configuration setup")
         hbox140.pack_start(label_lightdm_config, False, False, 10)
 
         hbox130 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-        reset_lightdm_original_si = Gtk.Button(
-            label="Apply the Lightdm configuration from Snigdha OS - auto reboot"
-        )
+        reset_lightdm_original_si = Gtk.Button(label="Apply the Lightdm configuration from Snigdha OS - auto reboot")
         reset_lightdm_original_si.set_size_request(100, 30)
-        reset_lightdm_original_si.connect(
-            "clicked", self.on_click_lightdm_reset_original_si
-        )
-        reset_lightdm_original = Gtk.Button(
-            label="Apply your original Snigdha OS configuration - auto reboot"
-        )
+        reset_lightdm_original_si.connect("clicked", self.on_click_lightdm_reset_original_si)
+        reset_lightdm_original = Gtk.Button(label="Apply your original Snigdha OS configuration - auto reboot")
         reset_lightdm_original.set_size_request(100, 30)
-        reset_lightdm_original.connect(
-            "clicked", self.on_click_reset_lightdm_lightdm_greeter
-        )
+        reset_lightdm_original.connect("clicked", self.on_click_reset_lightdm_lightdm_greeter)
         hbox130.pack_start(reset_lightdm_original_si, False, False, 10)
         hbox130.pack_start(reset_lightdm_original, False, False, 10)
 
@@ -280,9 +258,7 @@ backup your files"
         hbox21_lbl = Gtk.Label(xalign=0)
         hbox21_lbl.set_text("Autologin")
         self.autologin_lightdm = Gtk.Switch()
-        self.autologin_lightdm.connect(
-            "notify::active", self.on_autologin_lightdm_activated
-        )
+        self.autologin_lightdm.connect("notify::active", self.on_autologin_lightdm_activated)
         hbox21.pack_start(hbox21_lbl, False, False, 10)
         hbox21.pack_end(self.autologin_lightdm, False, False, 10)
 
@@ -293,15 +269,11 @@ backup your files"
 
         hbox23 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         hbox23_lbl = Gtk.Label(xalign=0)
-        hbox23_lbl.set_text("Use the ATT lightdm-gtk-greeter configuration")
+        hbox23_lbl.set_text("Use the SIN lightdm-gtk-greeter configuration")
         btn_install_snigdhaos_lightdm_greeter = Gtk.Button(label="Set Snigdha OS Installer config")
-        btn_install_snigdhaos_lightdm_greeter.connect(
-            "clicked", self.on_click_install_snigdhaos_lightdmgreeter
-        )
+        btn_install_snigdhaos_lightdm_greeter.connect("clicked", self.on_click_install_snigdhaos_lightdmgreeter)
         btn_reset_lightdm_greeter = Gtk.Button(label="Reset back to original config")
-        btn_reset_lightdm_greeter.connect(
-            "clicked", self.on_click_reset_lightdm_lightdm_greeter
-        )
+        btn_reset_lightdm_greeter.connect("clicked", self.on_click_reset_lightdm_lightdm_greeter)
         hbox23.pack_start(hbox23_lbl, False, False, 10)
         hbox23.pack_end(btn_reset_lightdm_greeter, False, False, 10)
         hbox23.pack_end(btn_install_snigdhaos_lightdm_greeter, False, False, 10)
@@ -310,9 +282,7 @@ backup your files"
         self.lbl_slickgreeter = Gtk.Label(xalign=0)
         login.find_slick_greeter_label(self.lbl_slickgreeter)
         btn_install_slick_greeter = Gtk.Button(label="Install/enable slickgreeter")
-        btn_install_slick_greeter.connect(
-            "clicked", self.on_click_install_slick_greeter
-        )
+        btn_install_slick_greeter.connect("clicked", self.on_click_install_slick_greeter)
         btn_remove_slick_greeter = Gtk.Button(label="Remove slickgreeter")
         btn_remove_slick_greeter.connect("clicked", self.on_click_remove_slick_greeter)
         hbox29.pack_start(self.lbl_slickgreeter, False, False, 10)
@@ -355,9 +325,7 @@ backup your files"
         hbox34 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         hbox34_label = Gtk.Label(xalign=0)
         hbox34_label.set_text("Background color can be set for both")
-        self.slick_greeter_color_checkbutton = Gtk.CheckButton(
-            label="Select it to use it"
-        )
+        self.slick_greeter_color_checkbutton = Gtk.CheckButton(label="Select it to use it")
         hbox34.pack_start(hbox34_label, False, False, 10)
         hbox34.pack_start(self.slick_greeter_color_checkbutton, False, False, 10)
 
@@ -367,9 +335,7 @@ backup your files"
 
         hbox24 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         hbox24_lbl = Gtk.Label(xalign=0)
-        hbox24_lbl.set_text(
-            "You can change more settings with the lightdm-gtk-greeter-settings app"
-        )
+        hbox24_lbl.set_text("You can change more settings with the lightdm-gtk-greeter-settings app")
         hbox24.pack_start(hbox24_lbl, False, False, 10)
 
         # lightdm
@@ -420,9 +386,7 @@ backup your files"
         message = Gtk.Label()
         message.set_markup("<b>Lightdm does not seem to be installed</b>")
 
-        install_lightdm = Gtk.Button(
-            label="Install Lightdm - auto reboot - do not forget to enable it"
-        )
+        install_lightdm = Gtk.Button(label="Install Lightdm - auto reboot - do not forget to enable it")
         install_lightdm.connect("clicked", self.on_click_si_lightdm_clicked)
 
         vboxstack2.pack_start(message, False, False, 0)
@@ -448,22 +412,14 @@ backup your files"
 
         hbox160 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         label_lxdm_config = Gtk.Label(xalign=0)
-        label_lxdm_config.set_text(
-            "We recommend to use the default ATT Lxdm configuration setup"
-        )
+        label_lxdm_config.set_text("We recommend to use the default SIN Lxdm configuration setup")
         hbox160.pack_start(label_lxdm_config, False, False, 10)
 
         hbox170 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-        reset_lxdm_original_si = Gtk.Button(
-            label="Apply the Lxdm configuration from ATT - auto reboot"
-        )
+        reset_lxdm_original_si = Gtk.Button(label="Apply the Lxdm configuration from SIN - auto reboot")
         reset_lxdm_original_si.set_size_request(100, 30)
-        reset_lxdm_original_si.connect(
-            "clicked", self.on_click_lxdm_reset_original_si
-        )
-        reset_lxdm_original = Gtk.Button(
-            label="Apply your original Lxdm configuration - auto reboot"
-        )
+        reset_lxdm_original_si.connect("clicked", self.on_click_lxdm_reset_original_si)
+        reset_lxdm_original = Gtk.Button(label="Apply your original Lxdm configuration - auto reboot")
         reset_lxdm_original.set_size_request(100, 30)
         reset_lxdm_original.connect("clicked", self.on_click_lxdm_reset)
         hbox170.pack_start(reset_lxdm_original_si, False, False, 10)
@@ -483,15 +439,11 @@ backup your files"
 
         hbox54 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         hbox54_lbl = Gtk.Label(xalign=0)
-        hbox54_lbl.set_text("Install more Lxdm ATT themes")
-        btn_install_snigdhaos_lxdm_theme_minimalo = Gtk.Button(label="Install ATT minimalo")
-        btn_install_snigdhaos_lxdm_theme_minimalo.connect(
-            "clicked", self.on_click_install_si_lxdm_minimalo
-        )
-        btn_remove_snigdhaos_lxdm_theme_minimalo = Gtk.Button(label="Remove ATT minimalo")
-        btn_remove_snigdhaos_lxdm_theme_minimalo.connect(
-            "clicked", self.on_click_remove_si_lxdm_minimalo
-        )
+        hbox54_lbl.set_text("Install more Lxdm SIN themes")
+        btn_install_snigdhaos_lxdm_theme_minimalo = Gtk.Button(label="Install SIN minimalo")
+        btn_install_snigdhaos_lxdm_theme_minimalo.connect("clicked", self.on_click_install_si_lxdm_minimalo)
+        btn_remove_snigdhaos_lxdm_theme_minimalo = Gtk.Button(label="Remove SIN minimalo")
+        btn_remove_snigdhaos_lxdm_theme_minimalo.connect("clicked", self.on_click_remove_si_lxdm_minimalo)
         hbox54.pack_start(hbox54_lbl, False, False, 10)
         hbox54.pack_end(btn_remove_snigdhaos_lxdm_theme_minimalo, False, False, 10)
         hbox54.pack_end(btn_install_snigdhaos_lxdm_theme_minimalo, False, False, 10)
@@ -526,9 +478,7 @@ backup your files"
 
         hbox62 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         hbox62_lbl = Gtk.Label(xalign=0)
-        hbox62_lbl.set_text(
-            "Show the panel at the bottom containing desktops? true/false"
-        )
+        hbox62_lbl.set_text("Show the panel at the bottom containing desktops? true/false")
         self.panel_lxdm = Gtk.Switch()
         # self.panel_lxdm.connect("notify::active", self.on_click_lxdm_panel)
         hbox62.pack_start(hbox62_lbl, False, False, 10)
@@ -583,9 +533,7 @@ backup your files"
         message = Gtk.Label()
         message.set_markup("<b>Lxdm does not seem to be installed</b>")
 
-        install_lxdm = Gtk.Button(
-            label="Install Lxdm - auto reboot - do not forget to enable it"
-        )
+        install_lxdm = Gtk.Button(label="Install Lxdm - auto reboot - do not forget to enable it")
         install_lxdm.connect("clicked", self.on_click_si_lxdm_clicked)
 
         vboxstack3.pack_start(message, False, False, 0)
@@ -633,9 +581,9 @@ backup your files"
         label113.set_text("Install our selection of wallpapers (installed)")
     else:
         label113.set_text("Install our selection of wallpapers")
-    btn_si_install = Gtk.Button(label="Install ATT backgrounds")
+    btn_si_install = Gtk.Button(label="Install SIN backgrounds")
     btn_si_install.connect("clicked", self.on_install_si_backgrounds)
-    btn_si_remove = Gtk.Button(label="Remove ATT backgrounds")
+    btn_si_remove = Gtk.Button(label="Remove SIN backgrounds")
     btn_si_remove.connect("clicked", self.on_remove_si_backgrounds)
     hbox113.pack_end(btn_si_remove, False, False, 10)
     hbox113.pack_end(btn_si_install, False, False, 10)
@@ -647,9 +595,9 @@ backup your files"
         label116.set_text("Install our selection of wallpapers (installed)")
     else:
         label116.set_text("Install our selection of wallpapers")
-    btn_si_plain_install = Gtk.Button(label="Install ATT plain backgrounds")
+    btn_si_plain_install = Gtk.Button(label="Install SIN plain backgrounds")
     btn_si_plain_install.connect("clicked", self.on_install_si_plain_backgrounds)
-    btn_si_plain_remove = Gtk.Button(label="Remove ATT plain backgrounds")
+    btn_si_plain_remove = Gtk.Button(label="Remove SIN plain backgrounds")
     btn_si_plain_remove.connect("clicked", self.on_remove_si_plain_backgrounds)
     hbox116.pack_end(btn_si_plain_remove, False, False, 10)
     hbox116.pack_end(btn_si_plain_install, False, False, 10)
