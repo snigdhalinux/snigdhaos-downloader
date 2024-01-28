@@ -4,10 +4,6 @@
 # Co Maintainer @ Snigdha OS
 ##################################################################################
 
-# ============================================================
-# Authors: Brad Heffernan - Erik Dubois - Cameron Percival
-# ============================================================
-
 
 def gui(self, Gtk, vboxstack22, sddm, lightdm, lxdm, fn, login):
     """create a gui"""
