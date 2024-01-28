@@ -16,15 +16,9 @@ def gui(self, Gtk, vboxstack8, neofetch, fn):
     hbox4.pack_start(hseparator, True, True, 0)
     hbox3.pack_start(lbl1, False, False, 0)
 
-    # ==========================================================
-    #                     NEOFETCH
-    # ==========================================================
-
     hbox23 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
     warning_label = Gtk.Label(xalign=0)
-    warning_label.set_markup(
-        "<b>Some distros have their own configuration and/or application, investigate</b>"
-    )
+    warning_label.set_markup("<b>Some distros have their own configuration and/or application, investigate</b>")
     hbox23.pack_start(warning_label, False, False, 10)
 
     self.asci = Gtk.RadioButton(label="Enable ascii backend")
@@ -173,10 +167,8 @@ def gui(self, Gtk, vboxstack8, neofetch, fn):
 
     hbox28 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
     label28 = Gtk.Label()
-    label28.set_text(
-        "AmOS is using a personalized neofetch application\n\
-Switch to the default neofetch to use this tab"
-    )
+    label28.set_text("AmOS is using a personalized neofetch application\n\
+Switch to the default neofetch to use this tab")
     hbox28.pack_start(label28, False, False, 10)
 
     hbox29 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
