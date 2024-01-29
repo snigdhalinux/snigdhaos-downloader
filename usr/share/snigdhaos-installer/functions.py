@@ -490,3 +490,40 @@ def set_grub_wallpaper(self, img):
         except:
             pass
 
+def set_default_grub(self):
+    if path.isfile(default_grub_conf):
+        if not path.isfile(default_grub_conf + ".bak"):
+            shutil.copy(default_grub_conf, default_grub_conf + ".bak")
+        try:
+            with open(default_grub_conf, "r", encoding="utf-8") as f:
+                def_grub = f.readlines()
+                f.close()
+            try:
+                val = get_position(def_grub, "GRUB_THEME")
+                def_grub[val] = 'GRUB_THEME="/boot/grub/themes/snigdhaos-grub-theme/theme.txt"\n'
+            except IndexError:
+                pass
+            with open(default_grub_conf, "w", encoding="utf-8") as f:
+                f.writelines(def_grub)
+                f.close()
+            print("Saved Successfully :)")
+            show_in_app_notfication(self, "Saved Successfully :)")
+        except Exception as e:
+            print(e)
+
+def set_grub_timeout(self, num):
+    try:
+        with open(default_grub_conf, "r", encoding="utf-8") as f:
+            lists = f.readlines()
+            f.close()
+        val = get_position(lists, "GRUB_TIMEOUT=")
+        lists[val] = "GRUB_TIMEOUT=" + str(num) + "\n"
+        print(lists[val])
+        with open(default_grub_conf, "w", encoding="utf-8") as f:
+            lists = f.writelines(lists)
+            f.close()
+        print("Timeout Set Successful :)")
+        show_in_app_notfication(self, "Timeout Set Successful :)")
+    except Exception as e:
+        print(e)
+        
