@@ -449,7 +449,7 @@ def make_grub(self):
         command = "grub-mkconfig -o /boot/grub/grub.cfg"
         subprocess.call(command.split(" "),shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
         print("Update Grub Files...")
-        print("It will take time...𓂺")
+        print("It will take time...")
         show_in_app_notfication(self,"Completed :)")
     except Exception as e:
         print(e)
@@ -467,5 +467,5 @@ def get_snigdhaos_grub_wallpapers():
         nw_lst.sort()
         return nw_lst
 
-# def set_grub_wallpaper(self, img):
-    # if path.isfile()
+def set_grub_wallpaper(self, img):
+    if path.isfile():

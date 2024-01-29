@@ -6,9 +6,12 @@
 
 # pylint:disable=C0103,
 
+## @iconized ==> remove all old themes and follow snigdhaos-core & arctic mirror
+## @iconized ==> don't work with chaotic-aur
+## we don't require this
+
 
 def gui(self, Gtk, vboxstack24, design, fn):
-    """create a gui"""
     hbox3 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     lbl1 = Gtk.Label(xalign=0)
     lbl1.set_text("Design")
@@ -54,11 +57,9 @@ We obey the dependencies of pacman"
     hbox10.pack_start(hbox10_label, False, False, 10)
 
     hbox12 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-    self.adapta_gtk_theme = Gtk.CheckButton(label="adapta-gtk-theme")
+    self.vimix_gtk_themes_git = Gtk.CheckButton(label="vimix-gtk-themes-git")
     self.arc_darkest_theme_git = Gtk.CheckButton(label="arc-darkest-theme-git")
     self.arc_gtk_theme = Gtk.CheckButton(label="arc-gtk-theme")
-    self.arcolinux_arc_kde = Gtk.CheckButton(label="arcolinux-arc-kde")
-    self.arcolinux_sweet_mars_git = Gtk.CheckButton(label="arcolinux-sweet-mars-git")
     self.ayu_theme = Gtk.CheckButton(label="ayu-theme")
     self.breeze = Gtk.CheckButton(label="breeze")
     self.dracula_gtk_theme = Gtk.CheckButton(label="dracula-gtk-theme")
@@ -90,8 +91,6 @@ We obey the dependencies of pacman"
     flowbox_themes.add(self.adapta_gtk_theme)
     flowbox_themes.add(self.arc_darkest_theme_git)
     flowbox_themes.add(self.arc_gtk_theme)
-    flowbox_themes.add(self.arcolinux_arc_kde)
-    flowbox_themes.add(self.arcolinux_sweet_mars_git)
     flowbox_themes.add(self.ayu_theme)
     flowbox_themes.add(self.breeze)
     flowbox_themes.add(self.dracula_gtk_theme)
