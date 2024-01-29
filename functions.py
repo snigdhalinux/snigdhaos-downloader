@@ -9,8 +9,9 @@ import gi
 gi.require_version("Gtk", "3.0")
 
 import os
-from os import getlogin,path
+from os import getlogin,path,makedirs,listdir, unlink, symlink
 import psutil
+import shutil
 
 
 # Global vars
@@ -72,4 +73,60 @@ def check_running_process(processName): #pacman | pacmac | yay | paru
     return False
 
 def copytree(self, destination, source, symlink=False, ignore=None):
+    if not path.exists(destination):
+        makedirs(destination)
+    for item in listdir(source):
+        s = path.join(source, item)
+        d = path.join(destination, item)
+        if path.exists(d):
+            try:
+                shutil.rmtree(d)
+            except Exception as e:
+                print(e)
+                unlink(d)
+        if path.isdir(s):
+            try:
+                shutil.copy(s, d, symlink, ignore)
+            except Exception as e:
+                print(e)
+                print("*Error!")
+                self.ecode = 1
+        else:
+            try:
+                shutil.copy2(s, d)
+            except:
+                print("**Error!")
+                self.ecode = 1
 
+def file_check(file):
+    if path.isfile(file):
+        return True
+    return False
+
+def path_check(path):
+    if os.path.isdir(path):
+        return True
+    return False
+
+def empty_dir_check(path):
+    if os.path.exists(path) and not os.path.isfile(path):
+        if not os.listdir(path):
+            return True
+        else:
+            return False
+
+def content_check(value, file):
+    try:
+        with open(file, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+            f.close()
+        for line in lines:
+            if value in line:
+                return True
+            else:
+                return False
+        return False
+    except:
+        return False
+
+ 
