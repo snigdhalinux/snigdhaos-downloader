@@ -12,6 +12,10 @@ import os
 from os import getlogin,path,makedirs,listdir, unlink, symlink
 import psutil
 import shutil
+import subprocess
+import datetime
+from datetime import datetime
+from gi.repository import Gtk, GLib
 
 
 # Global vars
@@ -129,4 +133,98 @@ def content_check(value, file):
     except:
         return False
 
- 
+def check_installed_package(package):
+    try:
+        subprocess.check_output("pacman -Qi " + package, shell=True, stderr=subprocess.STDOUT)
+        return True
+    except subprocess.CalledProcessError:
+        return False
+    
+def check_service(service):
+    try:
+        cmd = "systemctl is-active " + service + ".service"
+        output = subprocess.run(cmd.split(" "),check=True,shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        status = output.stdout.decode().strip()
+        if status == "active":
+            return True
+        else:
+            return False
+    except Exception:
+        # print(e) # bool -> we don't need trace
+        return False
+
+def check_socket(socket):
+    try:
+        cmd = "systemctl is-active " + socket + ".socket"
+        output = subprocess.run(cmd.split(" "),check=True,shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        status = output.stdout.decode().strip()
+        if status == "active":
+            return True
+        else:
+            return False
+    except Exception:
+        # print(e) # bool -> we don't need trace
+        return False
+
+def list_users(fname):
+    try:
+        data = []
+        with open(fname, "r", encoding="utf-8") as f:
+            for line in f.readlines():
+                if "1001" in line.split(":")[2]:
+                    data.append(line.split(":")[0])
+                if "1002" in line.split(":")[2]:
+                    data.append(line.split(":")[0])
+                if "1003" in line.split(":")[2]:
+                    data.append(line.split(":")[0])
+                if "1004" in line.split(":")[2]:
+                    data.append(line.split(":")[0])
+                if "1005" in line.split(":")[2]:
+                    data.append(line.split(":")[0])
+            data.sort()
+            return data
+    except Exception as e:
+        print(e)
+
+def check_group(group):
+    try:
+        groups = subprocess.run(["sh", "-c", "id " + sudo_username], shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        for i in groups.stdout.decode().split(" "):
+            if group in i:
+                return True
+            else:
+                return False
+    except Exception as e:
+        print(e)
+
+def check_systemd_boot():
+    if (path_check("/boot/loader") is True and file_check("/boot/loader/loader.conf") is True):
+        return True
+    else:
+        return False
+
+######## End Base Function
+
+####### Start misc function
+def copy_function(source, destination, isdir=False):
+    if isdir:
+        subprocess.run(["cp", "-Rp", source, destination], check=True, shell=False)
+    else:
+        subprocess.run(["cp", "-p", source, destination], check=True, shell=False)
+
+log_directory = "/var/log/archlinux/"
+sin_log_directory = "/var/log/archlinux/sin" 
+
+def create_log(self):
+    print("Creating Log 👀")
+    now = datetime.datetime.now()
+    time = now.strftime("%Y-%m-%d-%H-%M-%S")
+    destination = sin_log_directory + "sin-log-" + time
+    cmd = "sudo pacman -Q > " + destination
+    subprocess.call(cmd, shell=True,stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+def messagebox(self, title, message):
+    md = Gtk.MessageDialog(parent=self, falgs=0, message_type = Gtk.MessageType.INFO, buttons = Gtk.ButtonsType.OK, text=title)
+    md.format_secondary_markup(message)
+    md.run()
+    md.destroy()
