@@ -36,6 +36,10 @@ orogin_local_gpg_config = "/usr/share/snigdhaos-installer/data/any/gpg.conf"
 # Themes(Default)
 def_icons = "/usr/share/icons/default/index.theme"
 
+#Grub
+grub_theme_conf = "/boot/grub/themes/snigdhaos-grub-themes/theme.txt"
+default_grub_conf = "/etc/defaul/grub"
+
 #Mirrorlist
 mirrorlist = "/etc/pacman.d/mirrorlist"
 snigdhaos_mirrorlist = "/etc/pacman.d/snigdhaos-mirrorlist"
@@ -468,4 +472,21 @@ def get_snigdhaos_grub_wallpapers():
         return nw_lst
 
 def set_grub_wallpaper(self, img):
-    if path.isfile():
+    if path.isfile(grub_theme_conf):
+        if not path.isfile(grub_theme_conf + ".bak"):
+            shutil.copy(grub_theme_conf, grub_theme_conf + ".bak")
+        try:
+            with open(grub_theme_conf, "r", encoding="utf-8") as f:
+                lists = f.readlines()
+                f.close()
+            val = get_position(lists, "desktop-image: ")
+            lists[val] = 'desktop-image: "' + path.basename(img) + '"' + "\n"
+            with open(grub_theme_conf, "w", encoding="utf-8") as f:
+                f.writelines(lists)
+                f.close()
+            print("Saved Successfully :)")
+            print(img)
+            show_in_app_notfication(self, "Saved Successfully :)")
+        except:
+            pass
+
