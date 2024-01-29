@@ -445,6 +445,24 @@ def create_log(self):
     command = "sudo pacman -Q > " + destination
     subprocess.call(command,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
     GLib.idle_add(show_in_app_notfication, self, "Log Created :)")
+
+def permissions(destination):
+    try:
+        groups = subprocess.run(["sh","-c","id " + sudo_username],check=True,shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        for x in groups.stdout.decode().split(" "):
+            if "gid" in x:
+                var = x.split("(")[1]
+                group = var.replace(")", "").strip()
+        subprocess.call(["chown", "-R", sudo_username + ":" + group, destination], shell=False)
+    except Exception as e:
+        print(e)
+
+def restart_snigdhaos_installer():
+    if path.exists("/tmp/sin.lock"):
+        unlink("/tmp/sin.lock")
+        python = sys.executable
+        execl(python, python, *sys.argv)
+
 ##########################################################################
     
 
