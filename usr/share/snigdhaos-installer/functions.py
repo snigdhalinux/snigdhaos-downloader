@@ -56,6 +56,7 @@ snigdhaos_core ="[snigdhaos-core]\n\
                  Server = https://snigdhalinux.github.io/$repo/$arch" # sed -i s^* required databaseoptional *
 
 ## No need of chaotic aur as we have nitorzen
+## bump nitrozen -> arctic
 # chaotic_aur = "[chaotic-aur]\n\
                 # Include = /etc/pacman.d/chaotic-mirrorlist"
 
@@ -421,3 +422,50 @@ def close_in_app_notification(self):
     self.timeout_id = None
 ##########################################################################
     
+
+def change_shell(self, shell):
+    command = "sudo chsh " + sudo_username + " -s /bin/" + shell
+    subprocess.call(command,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+    print("Changed " + shell + "Relogin to activate!")
+    GLib.idle_add(show_in_app_notfication,self,"Changed " + shell + "Relogin to activate!")
+
+def clamp(x):
+    return max(0, min(x, 255))
+
+def rgb_to_hex(rgb):
+    if "rgb" in rgb:
+        rgb = rgb.replace("rgb(", "").replace(")", "")
+        vals = rgb.split(",")
+        return "#{0:02x}{1.02x}{2.02x}".format(clamp(int(vals[0])), clamp(int(vals[1])), clamp(int(vals[2])))
+    return rgb
+def copy_function(src, dst, isdir=False):
+    if isdir:
+        subprocess.run(["cp", "-Rp", src, dst], check=True, shell=False)
+    else:
+        subprocess.run(["cp", "-p", src, dst], check=True, shell=False)
+
+def make_grub(self):
+    try:
+        command = "grub-mkconfig -o /boot/grub/grub.cfg"
+        subprocess.call(command.split(" "),shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        print("Update Grub Files...")
+        print("It will take time...𓂺")
+        show_in_app_notfication(self,"Completed :)")
+    except Exception as e:
+        print(e)
+
+def get_snigdhaos_grub_wallpapers():
+    # no var 2 init
+    if path.isdir("/boot/grub/themes/snigdhaos-grub-theme"):
+        lists = listdir("/boot/grub/themes/snigdhaos-grub-theme")
+        cl_rem = [
+            "select_c.png"
+            # ""
+        ]
+        ext = [".png", ".jpeg", ".jpg"]
+        nw_lst = [x for x in lists if x not in cl_rem for y in ext if y in x]
+        nw_lst.sort()
+        return nw_lst
+
+# def set_grub_wallpaper(self, img):
+    # if path.isfile()
