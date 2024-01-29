@@ -411,6 +411,13 @@ def add_autologin_group(self):
 # If we need more, we will add later on! :)
 
 ##########################################################################
+
+def messagebox(self, title, message):
+    md2 = Gtk.MessageDialog(parent=self, flags=0, message_type=Gtk.MessageType.INFO,buttons=Gtk.ButtonsType.OK,text=title)
+    md2.format_secondary_markup(message)
+    md2.run()
+    md2.destroy()   
+
 def show_in_app_notfication(self, message):
     if self.timeout_id is not None:
         GLib.source_remove(self.timeout_id)
