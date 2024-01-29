@@ -418,12 +418,26 @@ def show_in_app_notfication(self, message):
     self.notfication_label.set_markup('<span foreground="white"' + message +'</span>')
     self.notfication_revealer.set_reveal_child(True)
     self.timeout_id = GLib.timeout_add(3000, timeOut, self)
+
 def timeOut(self):
     close_in_app_notification(self)
+
 def close_in_app_notification(self):
     self.notfication_revealer.set_reveal_child(False)
     GLib.source_remove(self.timeout_id)
     self.timeout_id = None
+
+log_dir = "/var/log/archlinux/"
+si_log_dir = "/var/log/archlinux/sin/"
+
+def create_log(self):
+    print("Creating Log...")
+    now = datetime.datetime.now()
+    time = now.strftime("") #needed
+    destination = si_log_dir + "sin-log-" + time
+    command = "sudo pacman -Q > " + destination
+    subprocess.call(command,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+    GLib.idle_add(show_in_app_notfication, self, "Log Created :)")
 ##########################################################################
     
 
