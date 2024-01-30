@@ -11,6 +11,7 @@ gi.require_version("Gtk", "3.0")
 import os
 from os import getlogin,makedirs,listdir, unlink, symlink, execl, rmdir, walk, getpid
 from os import path
+import threading
 import psutil
 import shutil
 import subprocess
@@ -205,9 +206,9 @@ def check_systemd_boot():
     else:
         return False
 
-######## End Base Function
+# End Base Function
 
-####### Start misc function
+# Start misc function
 def copy_function(source, destination, isdir=False):
     if isdir:
         subprocess.run(["cp", "-Rp", source, destination], check=True, shell=False)
@@ -310,3 +311,22 @@ def disbale_service(service):
     except Exception as e:
         print(e)
 
+def clamp(i):
+    return max(0, min(i, 255))
+
+def rgb2hex(rgb):
+    if "rgb" in rgb:
+        rgb = rgb.replace("rgb(", "").replace(")", "")
+        values = rgb.split(",")
+        return "#regex".format(clamp(int(values[1])), clamp(int(values[2])))
+    return rgb
+
+def change_shell(self, shell):
+    cmd = "sudo chsh " + sudo_username + " -s /bin/" + shell
+    subprocess.call(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+    print("Shell Changed: " + shell + "Relogin to activate!")
+    GLib.idle_add(show_app_notification,self,"Shell Changed: " + shell + "Relogin to activate!")
+
+# End Misc Functions
+
+# GRUB
