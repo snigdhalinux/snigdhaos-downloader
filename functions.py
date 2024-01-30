@@ -9,7 +9,8 @@ import gi
 gi.require_version("Gtk", "3.0")
 
 import os
-from os import getlogin,path,makedirs,listdir, unlink, symlink, execl
+from os import getlogin,makedirs,listdir, unlink, symlink, execl, rmdir, walk, getpid
+from os import path
 import psutil
 import shutil
 import subprocess
