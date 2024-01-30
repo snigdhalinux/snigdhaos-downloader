@@ -7,6 +7,7 @@
 # module imports
 import gi
 gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk, GLib
 
 import os
 from os import getlogin,makedirs,listdir, unlink, symlink, execl, rmdir, walk, getpid
@@ -17,7 +18,6 @@ import shutil
 import subprocess
 import datetime
 from datetime import datetime
-from gi.repository import Gtk, GLib
 import sys
 
 
@@ -381,7 +381,7 @@ def set_snigdhaos_defualt_grub(self):
             lists = f.readlines()
             f.close()
         try:
-            value2 = get_position(lists, "GRUB_THEME")
+            value2 = get_position(lists, "GRUB_THEME=")
             lists[value2] = 'GRUB_THEME="/boot/grub/themes/snigdhaos-grub-theme/theme.txt"\n'
         except IndexError:
             pass
@@ -393,3 +393,21 @@ def set_snigdhaos_defualt_grub(self):
     except Exception as e:
         print(e)
 
+defautl_grub_timeout = ""
+def set_grub_timeout(self, num):
+    try:
+        with open(defautl_grub_timeout, "r", encoding="utf-8") as f:
+            lists = f.readlines()
+            f.close()
+        value = get_position(lists, "GRUB_TIMEOUT=")
+        lists[value] = "GRUB_TIMEOUT=" + str(num) +"\n"
+        print(lists[value])
+        with open(defautl_grub_timeout, "w", encoding="utf-8") as f:
+            f.writelines(lists)
+            f.close()
+        print("Grub Time Out: " + num + "s")
+        show_app_notification(self,"Grub Time Out: " + num + "s")
+    except Exception as e:
+        print(e)
+
+# end grub :) ->
