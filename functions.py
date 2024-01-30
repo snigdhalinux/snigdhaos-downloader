@@ -330,3 +330,66 @@ def change_shell(self, shell):
 # End Misc Functions
 
 # GRUB
+
+def make_grub(self):
+    try:
+        cmd = "grub-mkconfig -o /boot/grub/grub.cfg"
+        subprocess.call(cmd.split(" "), shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        print("Updating Grub...🖕🏻")
+        print("It will Take Time!")
+        show_app_notification(self,"Updated Successfully👶🏻")
+    except Exception as e:
+        print(e)
+
+def get_snigdhaos_grub_wallpaper():
+    if path.isdir("/boot/grub/themes/snigdhaos-grub-theme"):
+        lists = listdir("/boot/grub/themes/snigdhaos-grub-theme")
+        rems = [
+            "select" #rcsx2b
+        ]
+        extensions = [".png", "jpeg", "jpg"]
+        re_list = [i for i in lists if i not in rems for j in extensions if j in i]
+        re_list.sort()
+        return re_list
+    
+grub_theme_config = ""
+def set_snigdhaos_grub_wallpaper(self, image):
+    if path.isfile(grub_theme_config):
+        if not path.isfile(grub_theme_config + ".bak"):
+            shutil.copy(grub_theme_config, grub_theme_config + ".bak")
+        try:
+            with open(grub_theme_config, "r", encoding="utf-8") as f:
+                lists = f.readlines()
+                f.close()
+            value = get_position(lists, "desktop-image: ")
+            lists[value] = 'desktop-image: "' + path.basename(image) + '"' + "\n"
+            with open(grub_theme_config, "w", encoding="utf-8") as f:
+                f.writelines(lists)
+                f.close()
+            print("Grub Wallpaper Has Been Set!")
+            print(image)
+            show_app_notification(self,"Grub Wallpaper Has Been Set!")
+        except:
+            pass
+
+default_grub_config = ""
+def set_snigdhaos_defualt_grub(self):
+    if path.isfile(default_grub_config + ".bak"):
+        shutil.copy(default_grub_config, default_grub_config + ".bak")
+    try:
+        with open(default_grub_config, "r", encoding="utf-8") as f:
+            lists = f.readlines()
+            f.close()
+        try:
+            value2 = get_position(lists, "GRUB_THEME")
+            lists[value2] = 'GRUB_THEME="/boot/grub/themes/snigdhaos-grub-theme/theme.txt"\n'
+        except IndexError:
+            pass
+        with open(default_grub_config, "w", encoding="utf-8") as f:
+            f.writelines(lists)
+            f.close()
+        print("Bump -> Snigdha OS Default Grub Theme")
+        show_app_notification(self,"Bump -> Snigdha OS Default Grub Theme")
+    except Exception as e:
+        print(e)
+
