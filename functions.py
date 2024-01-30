@@ -9,13 +9,14 @@ import gi
 gi.require_version("Gtk", "3.0")
 
 import os
-from os import getlogin,path,makedirs,listdir, unlink, symlink
+from os import getlogin,path,makedirs,listdir, unlink, symlink, execl
 import psutil
 import shutil
 import subprocess
 import datetime
 from datetime import datetime
 from gi.repository import Gtk, GLib
+import sys
 
 
 # Global vars
@@ -33,7 +34,7 @@ def get_lines(files):
     except Exception as e:
         print(e)
 
-def get_positions(lists, value):
+def get_position(lists, value):
     data = [string for string in lists if value in string]
     if len(data) != 0:
         position = lists.index(data[0])
@@ -228,3 +229,83 @@ def messagebox(self, title, message):
     md.format_secondary_markup(message)
     md.run()
     md.destroy()
+
+def show_app_notification(self, message):
+    if self.timeout_id is not None:
+        GLib.source_remove(self.timeout_id)
+        self.timeout_id = None
+    self.notification_label.set_markup('<span foreground = "white">' + message + '</span>')
+    self.notification_revealer.set_reveal_child(True)
+    self.timeout_id = GLib.timeout_add(3000, timeOut, self)
+
+def timeOut(self):
+    close_app_notification()
+
+def close_app_notification(self):
+    self.notification_revealer.set_reveal_child(False)
+    GLib.source_remove(self.timeout_id)
+    self.timeout_id = None
+
+def get_shortcuts(configlist):
+    shortcuts = _get_variable(configlist, "shortcuts")
+    shortcuts_index = get_position(configlist, shortcuts[0])
+    return shortcuts_index
+
+def get_commands(configlist):
+    cmds = _get_variable(configlist, "commands")
+    cmd_insdex = get_position(configlist, cmds[0])
+    return cmd_insdex
+
+def test(destination):
+    for root, dirs, filesr in walk(destination):
+        print(root)
+        for folders in dirs:
+            pass
+            for file in filesr:
+                pass
+        for file in filesr:
+            pass
+
+def permission(destination):
+    try:
+        groups = subprocess.run(["sh", "-c", "id " + sudo_username], check=True,shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        for i in groups.stdout.decode().split(" "):
+            if "gid" in i:
+                j = i.split("(")[1]
+                group = j.replace(")", "").strip()
+        subprocess.call(["chown", "-R", sudo_username + ":" + group, destination], shell=False)
+    except Exception as e:
+        print(e)
+
+def restart_snigdhaos_installer():
+    if path.exists("/tmp/sin.lock"):
+        unlink("/tmp/sin.lock")
+        python = sys.executable
+        execl(python, python, sys.argv)
+
+def enable_service(service):
+    try:
+        cmd = "systemctl enable " + service + ".service -f -now"
+        subprocess.call(cmd.split(" "),shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        print("Enabling Service: " + service + "😉")
+    except Exception as e:
+        print(e)
+
+def restart_service(service):
+    try:
+        cmd = "systemctl reload-or-restart " + service + ".service"
+        subprocess.call(cmd.split(" "),shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        print("Reloading: " + service + "😉")
+    except Exception as e:
+        print(e)
+
+def disbale_service(service):
+    try:
+        cmd = "systemctl stop " + service
+        subprocess.call(cmd.split(" "),shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        cmd = "systemctl disable " + service
+        subprocess.call(cmd.split(" "),shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        print("Diabled: " + service + "😉")
+    except Exception as e:
+        print(e)
+
