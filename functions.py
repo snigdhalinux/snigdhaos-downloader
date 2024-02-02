@@ -19,6 +19,8 @@ import subprocess
 import datetime
 from datetime import datetime
 import sys
+import time
+import logging
 
 
 # Global vars
@@ -327,6 +329,85 @@ def change_shell(self, shell):
     print("Shell Changed: " + shell + "Relogin to activate!")
     GLib.idle_add(show_app_notification,self,"Shell Changed: " + shell + "Relogin to activate!")
 
+def source_shell(self):
+    process = subprocess.run(["sh", "-c", 'echo "$SHELL"'], check=True, stdout=subprocess.PIPE)
+    output = process.stdout.decode().strip()
+    if output == "/bin/bash":
+        subprocess.run(["bash","-c","su - " + sudo_username + ' -c "source ' + home + '/.bashrc"',], check=True, stdout=subprocess.PIPE)
+    elif output == "/bin/fish":
+        subprocess.run(["fish","-c","su - " + sudo_username + ' -c "source ' + home + '/.config/fish/config.fish"',], check=True, stdout=subprocess.PIPE)
+    elif output == "/bin/zsh":
+        subprocess.run(["zsh","-c","su - " + sudo_username + ' -c "source ' + home + '/.zshrc"',], check=True, stdout=subprocess.PIPE)
+
+def get_shell():
+    try:
+        process = subprocess.run(["su", "-", sudo_username, "-c", 'echo "$SHELL"'], check=True,stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output = process.stdout.decode().strip().strip("\n")
+        if output in ("/bin/bash", "/usr/bin/bash"):
+            return "bash"
+        elif output in ("/bin/zsh", "/usr/bin/zsh"):
+            return "zsh"
+        elif output in ("/bin/fish", "/usr/bin/fish"):
+            return "fish"
+    except Exception as e:
+        print(e)
+def run_as_user(script):
+    subprocess.call(["su - " + sudo_username + " -c " + script], shell=False)
+
+def is_thread_alive(thread_name):
+    for thread in threading.enumerate():
+        if thread.name == thread_name and thread.is_alive():
+            return True
+    return False
+
+def _add_pacmanlog_queue(self):
+    logger = logging.getLogger("logger")
+    pacman_logfile = "/var/log/pacman.log"
+    try:
+        lines = []
+        with open(pacman_logfile, "r", encoding="utf-8") as f:
+            while True:
+                line = f.readline()
+                if line:
+                    lines.append(line.encode("utf-8"))
+                    self.pacmanlog_queue.put(lines)
+                else:
+                    time.sleep(0.5)
+    except Exception as e:
+        # print(e)
+        logger.error("Exception in add_pacmanlog_queue() : %s" %e)
+    finally:
+        logger.debug("No new lines found inside the pacman log file")
+
+def _update_tv_plog(self, tb_plog, tv_plog):
+    lines = self.pacmanlog_queue.get()
+    logger = logging.getLogger("logger")
+    try:
+        if len(lines) > 0:
+            end_iter = tb_plog.get_end_iter()
+            for line in lines:
+                if len(line) > 0:
+                    tb_plog.insert(
+                        end_iter,
+                        line.decode("utf-8"),
+                        len(line),
+                    )
+
+    except Exception as e:
+        logger.error("Exception in update_tv_plog() : %s" % e)
+    finally:
+        self.pacmanlog_queue.task_done()
+        if len(lines) > 0:
+            text_mark_end = tb_plog.create_mark("END", tb_plog.get_end_iter(), False)
+            tv_plog.scroll_mark_onscreen(text_mark_end)
+        lines.clear()
+
+def _start_log_timer(self, tb_plog, tv_plog):
+    while True:
+        if self.start_logtimer is False:
+            break
+        GLib.idle_add()
+
 # End Misc Functions
 
 # GRUB
@@ -411,3 +492,140 @@ def set_grub_timeout(self, num):
         print(e)
 
 # end grub :) ->
+
+def install_packages(self, package):
+    command = "pacman -S " + package + " --noconfirm --needed"
+    if check_installed_package(package):
+        print(package + "already installed!")
+        GLib.idle_add(show_app_notification,self,package + " already installed!")
+    else:
+        try:
+            print(command)
+            subprocess.call(command.split(" "),shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+            print(package + "installed successfully!")
+            GLib.idle_add(show_app_notification,self,package + " installed successfully!")
+        except Exception as e:
+            print(e)
+
+def install_local_packages(self, package):
+    command = "pacman -U " + package + " --noconfirm --needed"
+    if check_installed_package(package):
+        print(package + "already installed!")
+        GLib.idle_add(show_app_notification,self,package + " already installed!")
+    else:
+        try:
+            print(command)
+            subprocess.call(command.split(" "),shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+            print(package + "installed successfully!")
+            GLib.idle_add(show_app_notification,self,package + " installed successfully!")
+        except Exception as e:
+            print(e)
+
+def install_snigdhaos_package(self, package):
+    command = "pacman -S " + package + " --noconfirm --needed"
+    if check_installed_package(package):
+        print(package + "already installed!")
+        GLib.idle_add(show_app_notification,self,package + " already installed!")
+    else:
+        try:
+            print(command)
+            subprocess.call(command.split(" "),shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+            print(package + "installed successfully!")
+            GLib.idle_add(show_app_notification,self,package + " installed successfully!")
+        except Exception as e:
+            print(e)
+
+def remove_package(self, package):
+    command = "pacman -R " + package + " --noconfirm"
+    if check_installed_package(package):
+        print(command)
+        # GLib.idle_add(show_app_notification,self,package + " already installed!")
+        try:
+            print(command)
+            subprocess.call(command.split(" "),shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+            print(package + "removed successfully!")
+            GLib.idle_add(show_app_notification,self,package + " removed successfully!")
+        except Exception as e:
+            print(e)
+    else:
+        print(package + " already removed!")
+        GLib.idle_add(show_app_notification, self, package + " already removed!")
+
+def remove_package_rs(self, package):
+    command = "pacman -Rs " + package + " --noconfirm"
+    if check_installed_package(package):
+        print(command)
+        # GLib.idle_add(show_app_notification,self,package + " already installed!")
+        try:
+            print(command)
+            subprocess.call(command.split(" "),shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+            print(package + "removed successfully!")
+            GLib.idle_add(show_app_notification,self,package + " removed successfully!")
+        except Exception as e:
+            print(e)
+    else:
+        print(package + " already removed!")
+        GLib.idle_add(show_app_notification, self, package + " already removed!")
+
+def remove_package_rss(self, package):
+    command = "pacman -Rss " + package + " --noconfirm"
+    if check_installed_package(package):
+        print(command)
+        # GLib.idle_add(show_app_notification,self,package + " already installed!")
+        try:
+            print(command)
+            subprocess.call(command.split(" "),shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+            print(package + "removed successfully!")
+            GLib.idle_add(show_app_notification,self,package + " removed successfully!")
+        except Exception as e:
+            print(e)
+    else:
+        print(package + " already removed!")
+        GLib.idle_add(show_app_notification, self, package + " already removed!")
+
+def remove_package_rdd(self, package):
+    command = "pacman -Rdd " + package + " --noconfirm"
+    if check_installed_package(package):
+        print(command)
+        # GLib.idle_add(show_app_notification,self,package + " already installed!")
+        try:
+            print(command)
+            subprocess.call(command.split(" "),shell=False,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+            print(package + "removed successfully!")
+            GLib.idle_add(show_app_notification,self,package + " removed successfully!")
+        except Exception as e:
+            print(e)
+    else:
+        print(package + " already removed!")
+        GLib.idle_add(show_app_notification, self, package + " already removed!")
+
+def enable_login_manager(self, loginmanager):
+    command = "systemctl enable " + loginmanager + ".service -f"
+    if check_installed_package(loginmanager):
+        try:
+            print(command)
+            subprocess.call(command.split(" "), shell=False,stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            print(loginmanager + " has been activated - reboot system!")
+            GLib.idle_add(show_app_notification,self,loginmanager + " has been activated - reboot system!")
+        except Exception as e:
+            print(e)
+            # GLib.idle_add(show_app_notification, self, loginmanager + " is not installed!")
+    else:
+        print(loginmanager + " not installed!")
+        GLib.idle_add(show_app_notification, self, loginmanager + " is not installed!")
+
+# def set_login_wallpaper(self, wallpaper):
+
+
+def auto_login_group(self):
+    command = subprocess.run(["sh", "-c", "su - " + sudo_username + " -c groups"], check=True, shell=False, stdout=subprocess.PIPE)
+    groups = command.stdout.decode().strip().split(" ")
+    if "autologin" not in groups:
+        try:
+            subprocess.call(command.split(" "), shell= False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        except Exception as e:
+            print(e)
+        try:
+            subprocess.run(["gpasswd", "-a", sudo_username, "autologin"], check=True, shell=False)
+        except Exception as e:
+            print(e)
