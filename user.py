@@ -34,3 +34,18 @@ def create_user(self):
             else:
                 fn.show_app_notification(self, "Fill All The Fields!")
                 fn.messagebox(self, "Message", "Fill All The Fields!")
+
+def on_click_delete_all_user(self):
+    username = self.cbt_users.get_active_text()
+    if username is not None:
+        userdel = "userl -r -f " + username
+        fn.system(userdel)
+        print("User Deleted Successfully!")
+        GLib.idle_add(fn.show_app_notification, self, "User Deleted Successfully!")
+
+def pop_cbt_users(self, combo):
+    combo.get_model().clear()
+    users = fn.list_users("/etc/passwd")
+    for user in users:
+        self.cbt_users.append_text(user)
+        self.cbt_users.set_active(0) 
